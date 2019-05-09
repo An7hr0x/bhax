@@ -1,0 +1,326 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Conway!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+    <section>
+        <title>Hangyaszimulációk</title>
+        <para>
+            Írj Qt C++-ban egy hangyaszimulációs programot, a forrásaidról utólag reverse engineering jelleggel
+            készíts UML osztálydiagramot is!
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href="https://bhaxor.blog.hu/2018/10/10/myrmecologist">https://bhaxor.blog.hu/2018/10/10/myrmecologist</link>
+        </para>
+        <para>
+        <mediaobject>
+                <imageobject>
+                    <imagedata fileref="hatodik/qt/uml.png" scale="50" />
+                </imageobject>
+            </mediaobject>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="hatodik/ant/ant.png" scale="25" />
+                </imageobject>
+            </mediaobject>
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="hatodik/ant/main.cpp">
+                <filename>Hangya</filename>
+            </link>              
+        </para>
+        <para>
+            Ha futtatjuk a programunkat, akkor egy ablakot kapunk mely megfelel terráriumban lévő hangya kolónia szimulációjának. A hangyák mozognak, feromont bocsájtanak ki, és élik az életüket a programunkban a megadott feltételek alapján.
+            Az UML osztálydiagram értelmezése a következő. Az ANt osztályban a hangyáknak a tulajdonságaik vannak meghatározva, irányaik az x és y koordinátái, a dir meg mint direction az iránytukat jelenti. Ha az osztálydiagramban valami előtt '+' vagy '-' jel van az azt jelenti hogy ha '+' akkor publikus osztály és bárhol elérhető, osztályán kívül is, ha '-' akkor pedig private, és csak a saját osztályában érhető el.
+            Ebből következik, hogy az ants egy vektor, amiben a hangyák vannak. Az AntWin private részében vannak az ablak, és a sejtek méreteire irányuló beállitások.
+            Az antThread pedig egy ablaknak a szála mely a sejtszámításokat végzi.Grids a rácsokat jelenti, a gridldx pedig két rácspont közül tárol egyet. A min és max a feromon min 1 és max 255 értékét jelenti.Függvényként megtalálható a konstruktor sé destruktor is. A closeEvent() kikapcsolásért szolgál, a keyPressEvent() a gombnyomást, és a paintEvent() a hangyák színéért felelős. Az AntThread hasonlit az AntWin re. Az evaporation a párolágás mértéke.
+            
+            
+        </para>            
+    </section>        
+    <section>
+        <title>Java életjáték</title>
+        <para>
+            Írd meg Java-ban a John Horton Conway-féle életjátékot, 
+            valósítsa meg a sikló-kilövőt!
+        </para>
+        <para>
+            Megoldás videó: 
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="hatodik/javaelet/Sejtautomata.java">
+                <filename>Sejt Kávé</filename>
+            </link>             
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+        </para>            
+        
+        <para>
+            A program törénete megegyezik a C++-os változatéval, mivel ugyan az csak más kódban implementálva. Ugyan úgy van élettér, melyek cellákra tagolódnak, és a cellákban egy sejt található, melyek meghalnak ha nincs minimum 2 élő szomszédja, és mindaddig halott marad amig 3 élő szomszédja van, különben élni fog. Ezeknek a szabályoknak az együttese a kódban itt található:
+            <programlisting language="java"><![CDATA[
+        
+public void időFejlődés() {
+        
+        boolean [][] rácsElőtte = rácsok[rácsIndex];
+        boolean [][] rácsUtána = rácsok[(rácsIndex+1)%2];
+        
+        for(int i=0; i<rácsElőtte.length; ++i) { // sorok
+            for(int j=0; j<rácsElőtte[0].length; ++j) { // oszlopok
+                
+                int élők = szomszédokSzáma(rácsElőtte, i, j, ÉLŐ);
+                
+                if(rácsElőtte[i][j] == ÉLŐ) {
+                /* Élő élő marad, ha kettő vagy három élő
+                 szomszedja van, különben halott lesz. */
+                    if(élők==2 || élők==3)
+                        rácsUtána[i][j] = ÉLŐ;
+                    else
+                        rácsUtána[i][j] = HALOTT;
+                }  else {
+                /* Halott halott marad, ha három élő
+                 szomszedja van, különben élő lesz. */
+                    if(élők==3)
+                        rácsUtána[i][j] = ÉLŐ;
+                    else
+                        rácsUtána[i][j] = HALOTT;
+                }
+            }
+        }
+        rácsIndex = (rácsIndex+1)%2;
+    }
+}]]></programlisting>
+        </para>
+        <para>
+            A sikló a sejttérben  lévő élőlény. Mely egy adott irányba megy, és másolja is magát. EZek egy kettő dimenziós tömbbe vannak elhelyezve, az x érték a befoglaló tégla bal felső sarkának az oszlopának felel meg, az y pedig a sorának.
+             <programlisting language="java"><![CDATA[
+public void sikló(boolean [][] rács, int x, int y) {
+        
+        rács[y+ 0][x+ 2] = ÉLŐ;
+        rács[y+ 1][x+ 1] = ÉLŐ;
+        rács[y+ 2][x+ 1] = ÉLŐ;
+        rács[y+ 2][x+ 2] = ÉLŐ;
+        rács[y+ 2][x+ 3] = ÉLŐ;
+        
+    }]]></programlisting>
+        </para>
+        <para>
+            A siklóágyú egy előre megadott irányba lövi ki a siklókat.
+            <programlisting language="java"><![CDATA[
+        
+public void siklóKilövő(boolean [][] rács, int x, int y) {
+        
+        rács[y+ 6][x+ 0] = ÉLŐ;
+        rács[y+ 6][x+ 1] = ÉLŐ;
+        rács[y+ 7][x+ 0] = ÉLŐ;
+        rács[y+ 7][x+ 1] = ÉLŐ;
+        
+        rács[y+ 3][x+ 13] = ÉLŐ;
+        
+        rács[y+ 4][x+ 12] = ÉLŐ;
+        rács[y+ 4][x+ 14] = ÉLŐ;
+        
+        rács[y+ 5][x+ 11] = ÉLŐ;
+        rács[y+ 5][x+ 15] = ÉLŐ;
+        rács[y+ 5][x+ 16] = ÉLŐ;
+        rács[y+ 5][x+ 25] = ÉLŐ;
+        
+        rács[y+ 6][x+ 11] = ÉLŐ;
+        rács[y+ 6][x+ 15] = ÉLŐ;
+        rács[y+ 6][x+ 16] = ÉLŐ;
+        rács[y+ 6][x+ 22] = ÉLŐ;
+        rács[y+ 6][x+ 23] = ÉLŐ;
+        rács[y+ 6][x+ 24] = ÉLŐ;
+        rács[y+ 6][x+ 25] = ÉLŐ;
+        
+        rács[y+ 7][x+ 11] = ÉLŐ;
+        rács[y+ 7][x+ 15] = ÉLŐ;
+        rács[y+ 7][x+ 16] = ÉLŐ;
+        rács[y+ 7][x+ 21] = ÉLŐ;
+        rács[y+ 7][x+ 22] = ÉLŐ;
+        rács[y+ 7][x+ 23] = ÉLŐ;
+        rács[y+ 7][x+ 24] = ÉLŐ;
+        
+        rács[y+ 8][x+ 12] = ÉLŐ;
+        rács[y+ 8][x+ 14] = ÉLŐ;
+        rács[y+ 8][x+ 21] = ÉLŐ;
+        rács[y+ 8][x+ 24] = ÉLŐ;
+        rács[y+ 8][x+ 34] = ÉLŐ;
+        rács[y+ 8][x+ 35] = ÉLŐ;
+        
+        rács[y+ 9][x+ 13] = ÉLŐ;
+        rács[y+ 9][x+ 21] = ÉLŐ;
+        rács[y+ 9][x+ 22] = ÉLŐ;
+        rács[y+ 9][x+ 23] = ÉLŐ;
+        rács[y+ 9][x+ 24] = ÉLŐ;
+        rács[y+ 9][x+ 34] = ÉLŐ;
+        rács[y+ 9][x+ 35] = ÉLŐ;
+        
+        rács[y+ 10][x+ 22] = ÉLŐ;
+        rács[y+ 10][x+ 23] = ÉLŐ;
+        rács[y+ 10][x+ 24] = ÉLŐ;
+        rács[y+ 10][x+ 25] = ÉLŐ;
+        
+        rács[y+ 11][x+ 25] = ÉLŐ;
+        
+    }]]></programlisting>
+        </para>
+        <para>
+            A program egy objectként van megírva, majd a main függvényben példányosítva van.(paramétere az oszlop és sor mérete)
+        </para>
+        
+    </section>        
+    <section>
+        <title>Qt C++ életjáték</title>
+        <para>
+            Most Qt C++-ban!
+        </para>
+        <para>
+            Megoldás videó: <mediaobject>
+                <imageobject>
+                    <imagedata fileref="hatodik/qt/qt.png" scale="25" />
+                </imageobject>
+            </mediaobject>
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="hatodik/qt/main.cpp">
+                <filename>The Game Of (Thrones)Life</filename>
+            </link>               
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+            
+            
+            Az algoritmust John Conway a Cambridge egyetem matematikusa találta ki, és a program híres lett 1970-ben. A program egy sejt automatizációs szimuláció, mely előre megadott szabályok szerint működik, és a kis négyzetek melyek a sejteknek felelnek meg, ezek szabályok szerint szaporodnak, mozognak, halnak meg.
+        </para>
+        <para>
+            Először is a szabályokat implementáljuk
+        </para>
+        <para>
+        <programlisting language="c++"><![CDATA[
+void SejtSzal::idoFejlodes() {
+    bool **racsElotte = racsok[racsIndex];
+    bool **racsUtana = racsok[(racsIndex+1)%2];
+    for(int i=0; i<magassag; ++i) { // sorok
+        for(int j=0; j<szelesseg; ++j) { // oszlopok
+            int elok = szomszedokSzama(racsElotte, i, j, SejtAblak::ELO);
+            if(racsElotte[i][j] == SejtAblak::ELO) {
+                
+                if(elok==2 || elok==3)
+                    racsUtana[i][j] = SejtAblak::ELO;
+                else
+                    racsUtana[i][j] = SejtAblak::HALOTT;
+            }  else {
+               
+                if(elok==3)
+                    racsUtana[i][j] = SejtAblak::ELO;
+                else
+                    racsUtana[i][j] = SejtAblak::HALOTT;
+            }
+        }
+    }
+    racsIndex = (racsIndex+1)%2;
+}
+]]></programlisting> 
+Itt a sikló kódja 
+         <programlisting language="c++"><![CDATA[
+void SejtAblak::siklo(bool **racs, int x, int y) {
+  
+  racs[y+ 0][x+ 2] = ELO;
+  racs[y+ 1][x+ 1] = ELO;
+  racs[y+ 2][x+ 1] = ELO;
+  racs[y+ 2][x+ 2] = ELO;
+  racs[y+ 2][x+ 3] = ELO;
+  
+}
+]]></programlisting> 
+    Itt meg a siklókilövő kódja
+      <programlisting language="c++"><![CDATA[
+void SejtAblak::sikloKilovo(bool **racs, int x, int y) {
+  
+  racs[y+ 6][x+ 0] = ELO;
+  racs[y+ 6][x+ 1] = ELO;
+  racs[y+ 7][x+ 0] = ELO;
+  racs[y+ 7][x+ 1] = ELO;
+  
+  racs[y+ 3][x+ 13] = ELO;
+  
+  racs[y+ 4][x+ 12] = ELO;
+  racs[y+ 4][x+ 14] = ELO;
+  
+  racs[y+ 5][x+ 11] = ELO;
+  racs[y+ 5][x+ 15] = ELO;
+  racs[y+ 5][x+ 16] = ELO;
+  racs[y+ 5][x+ 25] = ELO;
+  
+  racs[y+ 6][x+ 11] = ELO;
+  racs[y+ 6][x+ 15] = ELO;
+  racs[y+ 6][x+ 16] = ELO;
+  racs[y+ 6][x+ 22] = ELO;
+  racs[y+ 6][x+ 23] = ELO;
+  racs[y+ 6][x+ 24] = ELO;
+  racs[y+ 6][x+ 25] = ELO;
+  
+  racs[y+ 7][x+ 11] = ELO;
+  racs[y+ 7][x+ 15] = ELO;
+  racs[y+ 7][x+ 16] = ELO;
+  racs[y+ 7][x+ 21] = ELO;
+  racs[y+ 7][x+ 22] = ELO;
+  racs[y+ 7][x+ 23] = ELO;
+  racs[y+ 7][x+ 24] = ELO;
+  
+  racs[y+ 8][x+ 12] = ELO;
+  racs[y+ 8][x+ 14] = ELO;
+  racs[y+ 8][x+ 21] = ELO;
+  racs[y+ 8][x+ 24] = ELO;
+  racs[y+ 8][x+ 34] = ELO;
+  racs[y+ 8][x+ 35] = ELO;
+  
+  racs[y+ 9][x+ 13] = ELO;
+  racs[y+ 9][x+ 21] = ELO;
+  racs[y+ 9][x+ 22] = ELO;
+  racs[y+ 9][x+ 23] = ELO;
+  racs[y+ 9][x+ 24] = ELO;
+  racs[y+ 9][x+ 34] = ELO;
+  racs[y+ 9][x+ 35] = ELO;
+  
+  racs[y+ 10][x+ 22] = ELO;
+  racs[y+ 10][x+ 23] = ELO;
+  racs[y+ 10][x+ 24] = ELO;
+  racs[y+ 10][x+ 25] = ELO;
+  
+  racs[y+ 11][x+ 25] = ELO;
+  
+}
+]]></programlisting> 
+       </para>            
+    </section>        
+    <section>
+        <title>BrainB Benchmark</title>
+        <para>
+        </para>
+        <para>
+            Megoldás videó:
+        </para>
+        <para>            
+        <mediaobject>
+                <imageobject>
+                    <imagedata fileref="hatodik/brainb/brain.png" scale="25" />
+                </imageobject>
+            </mediaobject>
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="hatodik/qt/main.cpp">
+                <filename>The Game Of (Thrones)Life</filename>
+            </link>              
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+            
+            A programunk az esportolók tesztelésére lett kifejlesztve. A működésének az elve, hogy a képernyőn megjelennek négyzeteke, benne körökkel. Ha kattintunk egyet elindul a tesztelés, és a feladata az "játékosnak" hogy a körben bennetartsa az egerét amik mozognak, sőt idővel több megjelenik. Ha túl gyorsnak bizonyul a játék, és kicsúszik a játékos a területből akkor lessul egy picit.
+        </para>            
+    </section>        
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+</chapter>                

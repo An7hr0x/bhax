@@ -1,0 +1,214 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Gutenberg!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+        <cover>
+            <para>
+                Programozás tankönyvek rövid olvasónaplói.
+            </para>
+        </cover>
+    </info>
+    <section>
+        <title>Programozási alapfogalmak(PICI)</title>
+
+        <para>
+            2.Hét </para>
+            <para>
+            Megismertet minket a programozási nyelvek szintjeivel, Megnevezi pontosan a magasszintű nyelven irt programot.
+            Ismerteti velünk a szintaktika és a szemantika fogalmát.
+            Processzorok gép nyelvének létezéséről is szó esik, mint ahogy a fordító és értelmező programokról is.
+            Megmagyarázza mi a fordítóprogram és mi az értelmező program. Hivatkozási nyelvről is ismerteti az alapvető információkat.
+            Következő rész a programnyelvek osztályozása, beszél az imperatív nyelvekről, dekleratív nyelvekről, és a másnyelvű nyelvekről.
+            Végül a jegyzet jelöléseiről esik szó, meg arról hogy miket tárgyal majd a jegyzet.
+        </para>
+        
+        
+        <para>
+            3.Hét </para>
+            <para>
+            Először az adattípusokat vesszük. Fogalma egy absztrakt programozási eszköz, amely mindig más, konkrét programozási
+            eszköz egy komponenseként jelenik meg. Az adattípus neve egy azonosító. Léteznek típusos és nem típusos nyelvek, melyek vagy ismerik vagy nem az adattípusokat.
+            Egy adattípus 3 dolgot határoz meg. Szó esik a tarományokról, a műveletekről és a reprezentációkról. Léteznek standard típusok. Definiálni is lehet egyes nyelveknél típusokat , melyekhez szükséges megadni a tartományt a műveleteket és a reprezentációt.
+            Reprezentációt kevés nyelvben lehet megadni(pl.Ada). Az adattípusok önállóak, és egymástól különböznek, de létre lehet hozni altípusokat, mely egy szűkebb tartománya egy típusnak, igy a műveletei és a reprezentációja változatlan.
+            Az adattípusoknak 2 nagy csoportja van, a skalár vagy másnéven az egyszerű adattípus, mely atomi értékeket tartalmaz, ezek lehetnek a literálok egy program szövegében. A másik nagy típus a struktúrált vagy összetett adattípus, ezeknek a tarományainak az elemei is valamilyen típussal rendelkeznek, és nem atomiak. Ezek általában valamilyen absztrakt adatszerkezet programnyelvi megfelelői.
+            (2.4.1.\Egyszerű típusok) Minden nyelvben létezik az egész típus/típusok. Néhány nyelv még ismeri az előjel nélküli típust. Az egész fixpontosan van belsőleg ábrázolva, a valós típusok viszont lebegőpontosak. Az egész és valós típusokra a közösen numerikus típusokként hivatkozunk.
+            Léteznek karakteres típusok, melynek elemei karakterek, vagy például a karakterlánc és a sztring elemei a karaktersorozatok.
+            Léteznek még ezeken kívül logikai típusok(tartománya igaz hamis értékekből áll), felsorolás típus, sorszámozott típus és a sorzámozott típus altípusa ként lehet származtani az intervallum típust.
+            (2.4.2\Összetett típusok)Két legfontosabb típus itt a tömb, és a rekord. A tömböt meghatározza a dimenziók száma, az index készletének típusa és tartománya, és az elemeinek a típusa. A C nyelv nem ismeri a többdimenziós tömböket.
+            Ha a tömb nevére hivatkozunk, akkor egy érték csoportra hivatkozunk vele(kivéve C). Elemek sorrendjét a reprezentáció határozza meg. Az értékcsoport egyes elemeire az indexek segitségével hivatkozunk. A PICI könyv ezek után kitér a tömb típusssal kapcsolatban kérdésekre, és azok megválaszolására, melyek fontosak ahhoz hogy a tömb típust helyesen használjuk.
+            A következő amire kitér, az a rekord típus, melynek tarományának elemei olyan értékcsoportok, amelyeknek az elemei különböző típusúak lehetnek. Az egyes elemeket mezőknek nevezzük, minden mezőnek önálló neve és egy saját típusa van. C ben a rekord statikus típus, más nyelveknél (pl. Ada) viszont eltérhet.Kitér ősnyelvek reokrdtípusaira a könyv még. És az újabb nyelvek rekordtípusának egyszintűségére is. 
+            Egyes mezőkre külön minősített névvel tudunk hivatkozni, ennek alakja <screen>eszköznév.mezőnév</screen>, erre azért van szükség mert a mezők nevei nem mindig egyediek. A rekord típus alapvető szerepet játszik az input-outputnál.
+            (2.4.3.\Mutató típus) A mutató típus egy lényegében egyszerű típus, különlegessége hogy tartományának elemei tárcímek. Ezzel valósítható meg az indirekt címzés.Értéke egy tárbeli cím, igy nem egy értékre, hanem egy tár adott területére, és az azon lévő értékre. Van egy speciális eleme, a NULL cím.
+            (2.5\Nevesített konstans) 3 komponensből áll, a névből, típusból, értékből. A nevesített konstanst deklarálni kell. az értéke deklarációnál eldől és később nem változtatható meg. Szerepe egyrészt, hogy sokszor előforduló értékeket "beszélő" nevekkel látunk el, igy könnyebb rá utalni a szövegben. És a másik, talán fontosabb, hogy ha egy programban átakarjuk írni az értékét, nem kell minden előfordulásánál, hanem elég csak egy helyen, a deklarációs utasításában.
+            A PICI kiér itt is fontos kérdésekre és válaszokra.
+            (2.6\A változó)4 komponensből állnak, ezek a következők: név, attribútumok, cím, érték. A név az egy egyedi azonosító. Az attribútumok olyan jellemzők mely a változó futás közbeni viselkedését határozzák meg, és a változóhoz deklaráció segitségével rendelődnek.(Itt szó esik az explicit,implicit,automatikus deklarációról).A változó címkomponense a tárnak azt a részét határozza meg, ahol a változó értéke elhelyezkedik.
+            Egy változóhoz cím rendelhető több módon, lehet statikus tárkiosztás, dinamikus tárkiosztás, és programozó által vezérelt tárkiosztás. MIndhárom esetben a programozónak meg kell tudnia szüntetni a címkomponenst.Változó értékkomponensének meghatározására rendelkezésre áll az értékadó utasítás.Szó esik az inputról, kezdőérték adásról.
+            (2.7\Alapelemek az egyes nyelvekben) C, bemutatja az aritmetikai típusokat és a származtatott típusokat, meg a void típust. Ábrázolásokról, deklarációkról esik szó, és a megadásuknak a formájáról.
+            </para>
+            <para>4.hét</para><para>
+            (3\Kifejezések)Kiejezés felépítése,pre-in-post-fix fogalma. Kifejezés kiértékelés sorrendje, menete.Zárójelezések menete.A típuskényszerítés meg a típusegyenértékűségről esik szó. Konstans kifejezés. A C egy alapvetően kifejezésorientált nyelv. Tömbökről esik szó az elején. A C kifejezésfogalmának rekurzív definícióját is bemutatja(kifejezés,elsődleges kifejezés,balérték,).C precedencia táblázatot ismerteti és mik találhatóak benne. Megmutatja hogy milyen jelölésekkel milyen operátorokat értelmezünk(pl: +,-,!).
+            </para>
+            <para>5.Hét</para>
+        <para>
+           (4\Utasítások) Az utasításokról bővebben irtam a Utasítások cimű labor feladatomban, a PICI könyv is nagyjából ugyan azt tárgyalja. Szó esik a két nagy csoportról(deklarációs,végrehajtható). A végrehajtható utasítások a következők: értékadó,üres,ugró,elágaztató,ciklusszervező,hívó,vezérlésátadó,I/O,egyéb. Ezeket a könyv egyesével is értelmezi, és ír róluk egy kissebb összefoglalást.
+        
+        </para>
+        <para>6.Hét</para>
+        <para>
+            (5\A programok szerkezete)Az eljárásorientált programnyelvekben a program szövege többé-kevésbé független, szuverén részekre, ún. programegységekre tagolható. Kérdésekkel és válaszokkal indul a fejezet, melyek belátást nyújtanak a programok működésébe. Alprogramok a következő, fogalma és használatukra tér ki, felépülése formálisan(fej vagy specifikáció,törzs vagy implementáció,vég) és komponensei(név,formális paraméterlista,törzs,környezet).Az alprogramoknak két fajtája van: eljárás és függvény. Eztkövetően a hívásokra mutat példát.
+            Alprogramok esetén típust paraméterként átadni nem lehet. A C például csak egyetlen paraméterátadási módot ismer. Ezek után kitért Ada,PL/I
+        </para>
+        <para>7.hét</para>
+        <para>
+            Paraméter kiértékelés, paraméter átadás. Paraméter átadási módok(érték,cím,eredmény,érték-eredmény,név,szöveg szerinti átodásokról beszélhetünk). Végén itt is kitért a frotranra.
+        </para>
+        <para>8.hét</para>
+        <para>
+            Blokk fogalma, formalitása. ELhezése is emlitésre kerül, aktivizációja és befejezése is. Nem minden eljárásorientált nyelv ismeri. Hatáskör, elmondja a fogalmát, a név hatáskörét. Lokális név fogalma. Szintekről is szó esik, képes ábrával bemutatva. Mindig befelé terjed a hatáskör.
+        </para>
+        <para>
+            9.hét
+        </para>
+        <para>
+            Input output fogalom meghatározása.Lehet input állomány, output állomány, input-output állomány. Az előbbiek fő lényege az adatmozgatás(ennek létezik 3 formája is).Szó esik az állományokkal való dolgozás során történő lépésekről is. Ezek után szót ejt még az implicit állományokról. Végső pontja a fejezetnek a különböző programnyelvek közötti különbségek, és megoldások.
+        </para>
+        <para>
+            11.hét
+        </para>
+        <para>
+            Kivételkezelés lényege hogy ha érzékeli a kivétel kezelő hogy történt egy adott esemény, akkor ez a programrész máshogy reagál, és csinál valamit. Kivételeknek van neve, ezért azonosithatóak. KIvételek figyelése tiltható és engedélyezhető is. Később feltesz pár kérdést is a könyv, melyek a kivételalkotásról szól, hatáskörükről, és egyéb elméleti kérdések.
+        </para>
+        <para>
+            13.Hét
+        </para>
+        <para>
+            Említi a Neumann architektúrán felépült gépek lényegét, ismerteti a szál / process fogalmát. A processek kezelése operácoós rendszer szinten történik.  Következnek ezek után a párhuzamos programozás nyelvi alapfogalmai, melyben kitért a kommunikációra, szinkronizációra, konkurenciára, kölcsönös kizárásra. És végül elmondja a könyv hogy a párhuzamos programozás megvalósításához a programnyelvnek mivel kell rendelkeznie.
+        </para>
+        
+    </section>  
+    <section>
+        <title>Programozás bevezetés</title>
+        <para>                
+            <citation>KERNIGHANRITCHIE</citation>
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href="https://youtu.be/zmfT9miB-jY">https://youtu.be/zmfT9miB-jY</link>
+        </para> 
+        
+               <para>
+               A kifejezéses utasítás legtöbbször értékadások vagy függvényhívások, alakjuk a  <programlisting><![CDATA[kifejezés;]]></programlisting>
+            </para>
+            <para>
+              As összetett utasítás vagy a blokkot ott használjuk ahol elvileg csak egy utasítás lenne elhelyezhető de ha szeretnénk több utasítást is használni akkor segít nekünk ez a típus.
+                Alakjai:
+                <programlisting><![CDATA[összetett_utasitás:
+            {deklaraciólistaopc utasításlistaopc}]]></programlisting>
+            <programlisting><![CDATA[deklarációlista:
+            deklaráció]]></programlisting>
+            <programlisting><![CDATA[deklaráció deklarációlista
+            -utasításlista
+            -utasítás
+            -utasítás utasításlista]]></programlisting>
+            </para>
+            <para>
+                <programlisting><![CDATA[if (kifejezés)
+	utasítás
+if (kifejezés)
+	utasítás
+else
+	(utasítás)	]]></programlisting>
+                A feltételes utasításnál a gép mindkét esetben kiértékeli a kifejezést, és ha az érték nem nulla akkor az első utasítás kerül végrehajásra, ha nulla, akkor meg a második kifejezés kerül végrehajtásra. Az else C ben úgy működik hogy utolsó else nélküli if-hez kapcsolódik.
+            </para>
+            <para>
+                A while utasítás addig ismétlődik míg az értéke nem nulla, az érték vizgsálat mindig végrehajtás előtt történik.
+                Alakja:
+                <programlisting><![CDATA[while (kifejezés)
+    utasítás]]></programlisting>
+            </para>
+            <para>
+                A do utasítás ugyan az mint a while, csak az értékvizgsálat mindig az utasítás végrehajtás után történik.
+                Alakja:
+                <programlisting><![CDATA[do
+    utasítás
+while (kifejezés);]]></programlisting>
+            </para>
+            <para>
+                <programlisting><![CDATA[for (1._kifejezésopc; 2._kifejezésopc; 3._kifejezésopc)
+    utasítás)]]></programlisting>
+                A for utasítás a következő a soron, az első kifejezés a ciklust inicializálja, a második azt a vizsgálatot határozza meg mely minden iterációt megelőz, és a vezérlés kilép a programból ha nullával válik egyenlővé,
+                a harmadik kifejezés gyakra az egyet iterációk után történő inkrementálást határozza meg.Bármely kifejezés elhagyható.
+            </para>
+            <para>
+                A switch utasítás a kifejezés értékétől függően más utasításra vált át a vezérlés. Az eredménynek int típusúnak kell lennie. A switchen belül bármelyik utasítás cimkézhető egy vagy több <programlisting><![CDATA[case állandó_kifejezés;]]></programlisting> taggal.
+                Kilépni a switchből a break utasítással lehet.
+                Alakja:
+                <programlisting><![CDATA[switch (kifejezés)
+utasítás]]></programlisting>
+            </para>
+            <para>
+                A break utasítás hatására befejeződik a breaket körülvevő legbelső while, do, for vagy switch.
+                <programlisting><![CDATA[break;]]></programlisting>
+            </para>
+            <para>
+                A continue utasítás hatására az utasítást körülvevő legbelső while, do, for utasítás a ciklusfolytató részére adódik át, vagyis a ciklus végére.
+                <programlisting><![CDATA[continue;]]></programlisting>
+            </para>
+            <para>
+                A return a függvény hívójához tér vissza.
+                <programlisting><![CDATA[return;]]></programlisting>
+            </para>
+            <para>
+                A goto utasítás a feltétel nélküli vezérlés átadásnál használatos
+                <programlisting><![CDATA[goto azonosító;]]></programlisting>
+            </para>
+            <para>
+                A címkézett utasítás ara jó hogy, bármley utasítást megelőzhetik az <programlisting><![CDATA[azonosító;]]></programlisting> előtagok, amelyek cimkeként szolgálnak, ezeket használja a goto utasítás.
+            </para>
+            <para>
+                A nulla utasítás alakja a <programlisting><![CDATA[;]]></programlisting> hordozhat címkét vagy üres ciklustörzset is képezhet.
+            </para>
+            
+            <para>
+                A két fontos eltérés a verziók között, ami még nincs a régebbiben, hogy nincsenek //-típusú kommentek, és a for cikluson belül nem lehet deklarálni változót.Lásd.: forrásban
+            </para>       
+    </section>        
+    <section>
+        <title>Programozás</title>
+        <para>                
+            <citation>BMECPP</citation>
+            
+        </para>
+        <para>
+            5.Hét
+        </para>
+        <para>
+            A fejezet a C++ nem objektumorientált ujdonságaival kezdődik. Megmutatja különböző függvényeknek a C és C++ beli változatát, és a különbségeket ezek között elmagyarázza(pl.: main).
+            Bool típus bevezetése.Többájtos sztringek de C stílusúakról esik szó. Változódeklaráció de mint utasítás, igy létrehozhatunk ott változót ahol szükségünk van rá. Függvénynevek túlterhelése a következő. C ben nem lehet két azonos nevű függvény mert az azonosítja őket, de C++ ban már lehet, mert az azonosítás a függvénynév és az argumentumával történik, és ez elnevezéseknél előnyös. Alapértelmezett függvényargumentumok, tehét ha érték nélkül adunk meg egy argumentumot akkor az alapértelmezett értékével kerül meghívásra(pl.CreateWindow 100 as x,y értéke).
+            Paraméterátadás referenciatípussal, itt is C programból indulunk ki példaként, mert itt kizárólag érték szerinti paraméterátadás történik csak. Itt szó esik még a pointerekről. Majd bemutatja hogy hogy alakíthatunk át egy C példát C++ ra referenciatípussal.
+        </para>
+        <para>
+            6.hét
+        </para>
+        <para>
+            Megismertet az objektumorientáltság alapjaival, hátteret biztosít, és informatika történelmet mesél. Bevezeti az objektumokat, öröklés fogalmát és a tipus támogatást tipus váltásokat. PÉldát is hoz koordináta rendszer beli számitásokra, ezzel a strukturáltságot mutatja meg(itt szó esik az attribútumokról és a metódusról is).
+            Tagváltozókat mutatja meg,tagfüggvényeket és ezeket példában is megmutatja, és kitért a C hez képest található különbségre. Követkeő volt a data hiding, itt kitér a programot irók problémájára. Ezek után szó esik a példányosításról objektumról és hoz pár példát is. Következő a konstruktor és destruktor, itt a sebezhetőségről esik szó, és az alapértelmezett inicializálásról, kitér még a konstruktorok részleteire melyek érdekesek és sokat használatosak. DEstruktorra csak röviden tér ki, megmutatja mivel kezdődik, és leirja hogy a felszabadítás a lényege. A következő rész a dinamikus memóriakezelés, itt is a C re tér ki először példával, majd bemutatj a a C++ os megoldást.
+            FOntos szót ejetni a másoló konstruktorról is, mivel azt is bemutatja, de mi azt már jól ismerjük a LZWBinfa alapján. Következő fejezet volt a Friend függvények és osztályok, utánuk jött a tagváltozók inicializálása rész, melyre már itértünk picit a konstruktoroknál.
+            Beágyazott definiciók megismertetése, és C++ hoz kapcsolódása, rengeteg példával.
+        </para>
+        <para>7.hét</para>
+        <para>
+            Operátorok és túlterhelésük. C++ előzményekkel kezdődik, és beszél az operátorokról általában is. Fügvényszintaxis és a túlterhelés a következő, itt is sok sok példa és kódcsipetke.
+
+        </para>
+        <para>9.Hét</para>
+        <para>
+           Először kitér szabványos adatfolyamokra, másnéven streamekre, szót ejt az istream,ostream ről, melyek a be és kimeneti adatfolyamok osztályai. Objektumokat is ismertet, mintpéldául a cin,cout,cerr... Eztkövetően sok példát hoz a bemenetre, sok szám szöveg és egyéb bekérésekre,ezekkel műveletekre, és különböző kiiratásokra. Később rátér a manipulátorokra,ezekkel a streameket lehet manipulálni, például a cout &lt; &lt; flush. Az előre definiált manipulátorok megtalálhatóak a iomanip névtérben. Kitér megint a C ben használt megoldásokra, és utána megmutatja a C++ os megoldást. Végső soron az állománykezelést veszi, melyek az if,of,fstream névre hallgatnak. Ismét C-s példával kezd. KItér a konstruktorokra és destruktorokra újra. Jelzőbit használat különféle fájl megnyitásokra.
+        </para>
+        <para>11.hét</para>
+        <para>
+            Kivételkezelésről esik szó, először hoz egy példát hogy elmagyarázza az értelmi lényegét. Hozott egy problémát amit egy kódcsipetben meg is old. Következenek ezek után az alapok, ha például kivétel van akkor a kivételkezelőre ugorjon. Példát ad arra hogy ha számot szeretnénk bekérni inputba, és nem azt kapunk akkor kezelhetjük kivételként erre a példára láthatunk is egy kódcsipetet melyben nem nulla számot kér, és ha 0 át kapna mégis akkor dob egy exceptiont. Majd később egy táblázatban is összefoglalja az előnyeit annak ha használunk kivételkezelést. Majd még hoz sok sok példát sok féle különböző kivételekre. Szó esik az egymásba ágyazott try-catch ről is. Végül megmutatja a stack rewindot, melyre hoz egy példát, és elmagyarázza hogy ha f2 kivételt dob, akkor mi történik. Egy láncszerű esemély fut le, ha exceptiont kap el.
+        </para>
+    </section>        
+</chapter>                

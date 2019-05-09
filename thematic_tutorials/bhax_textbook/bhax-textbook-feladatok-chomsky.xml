@@ -1,0 +1,440 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Chomsky!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+    <section>
+        <title>Decimálisból unárisba átváltó Turing gép</title>
+        <para>
+            Állapotátmenet gráfjával megadva írd meg ezt a gépet!
+        </para>
+        <para>
+            Megoldás videó:
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="masodik/unaris/unaris.png" scale="20" />
+                </imageobject>
+            </mediaobject>
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="masodik/unaris/unar.c">
+                <filename>Prog1/repo/bhax/thematic_tutorials/bhax_textbook/masodik/unaris/unar.c</filename>
+            </link>               
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+            
+            Az unáris számrendszer szimbólumokon alapszik, legegyszerűbb számrendszer, és a kézenszámolás is tekinthető unáris számrendszernek. A számokat a szimbólumok darabszámával
+            ábrázoljuk, mint például a kezeinken az ujjak, vagy a programomban az 1-esekkel. A program, bekér egy számot, és for ciklus segítségével annyi 1-est ábrázol amennyi a szám. 
+            A turning gépes automata megtekinthető a rajzomon, ez az automata ha lefut, akkor egy decimális számot, unárisba átvált.
+        </para>
+    </section>        
+        
+    <section>
+        <title>Az a<superscript>n</superscript>b<superscript>n</superscript>c<superscript>n</superscript> nyelv nem környezetfüggetlen</title>
+        <para>
+            Mutass be legalább két környezetfüggő generatív grammatikát, amely ezt a nyelvet generálja!
+        </para>
+        <para>
+            Megoldás videó:
+        </para>
+        <para>
+            Megoldás forrása:                
+        </para>
+        <para>
+           Passzolt feladat.
+        </para>
+    </section>        
+                
+    <section>
+        <title>Hivatkozási nyelv</title>
+        <para>
+            A <citation>KERNIGHANRITCHIE</citation> könyv C referencia-kézikönyv/Utasítások melléklete alapján definiáld 
+            BNF-ben a C utasítás fogalmát!
+            Majd mutass be olyan kódcsipeteket, amelyek adott szabvánnyal nem fordulnak (például C89), mással (például C99) igen.
+        </para>
+        <para>
+            Megoldás videó: 
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="masodik/verz/verz.c">
+                <filename>Prog1/repo/bhax/thematic_tutorials/bhax_textbook/masodik/verz/verz.c</filename>
+            </link> 
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+            
+            A könyv 13 féle utasítás típust tárgyal, ezek a következők: A kifejezéses utasítás, Aa összetett utasítás vagy blokk, A feltételes,do,while,for,switch,break,continue,return,goto címkézett, és a nulla utasítás.
+        </para>
+        <para>
+               A kifejezéses utasítás legtöbbször értékadások vagy függvényhívások, alakjuk a  <programlisting><![CDATA[kifejezés;]]></programlisting>
+            </para>
+            <para>
+              As összetett utasítás vagy a blokkot ott használjuk ahol elvileg csak egy utasítás lenne elhelyezhető de ha szeretnénk több utasítást is használni akkor segít nekünk ez a típus.
+                Alakjai:
+                <programlisting><![CDATA[összetett_utasitás:
+            {deklaraciólistaopc utasításlistaopc}]]></programlisting>
+            <programlisting><![CDATA[deklarációlista:
+            deklaráció]]></programlisting>
+            <programlisting><![CDATA[deklaráció deklarációlista
+            -utasításlista
+            -utasítás
+            -utasítás utasításlista]]></programlisting>
+            </para>
+            <para>
+                <programlisting><![CDATA[if (kifejezés)
+	utasítás
+if (kifejezés)
+	utasítás
+else
+	(utasítás)	]]></programlisting>
+                A feltételes utasításnál a gép mindkét esetben kiértékeli a kifejezést, és ha az érték nem nulla akkor az első utasítás kerül végrehajtásra, ha nulla, akkor meg a második kifejezés kerül végrehajtásra. Az else C ben úgy működik hogy utolsó else nélküli if-hez kapcsolódik.
+            </para>
+            <para>
+                A while utasítás addig ismétlődik amíg az értéke nem nulla, az érték vizgsálat mindig végrehajtás előtt történik.
+                Alakja:
+                <programlisting><![CDATA[while (kifejezés)
+    utasítás]]></programlisting>
+            </para>
+            <para>
+                A do utasítás ugyanaz mint a while, csak az értékvizsgálat mindig az utasítás végrehajtás után történik.
+                Alakja:
+                <programlisting><![CDATA[do
+    utasítás
+while (kifejezés);]]></programlisting>
+            </para>
+            <para>
+                <programlisting><![CDATA[for (1._kifejezésopc; 2._kifejezésopc; 3._kifejezésopc)
+    utasítás)]]></programlisting>
+                A for utasítás a következő a soron, az első kifejezés a ciklust inicializálja, a második azt a vizsgálatot határozza meg mely minden iterációt megelőz, és a vezérlés kilép a programból ha nullával válik egyenlővé,
+                a harmadik kifejezés gyakra az egyet iterációk után történő inkrementálást határozza meg.Bármely kifejezés elhagyható.
+            </para>
+            <para>
+                A switch utasítás a kifejezés értékétől függően más utasításra vált át a vezérlés. Az eredménynek int típusúnak kell lennie. A switchen belül bármelyik utasítás címkézhető egy vagy több <programlisting><![CDATA[case állandó_kifejezés;]]></programlisting> taggal.
+                Kilépni a switchből a break utasítással lehet.
+                Alakja:
+                <programlisting><![CDATA[switch (kifejezés)
+utasítás]]></programlisting>
+            </para>
+            <para>
+                A break utasítás hatására befejeződik a breaket körülvevő legbelső while, do, for vagy switch.
+                <programlisting><![CDATA[break;]]></programlisting>
+            </para>
+            <para>
+                A continue utasítás hatására az utasítást körülvevő legbelső while, do, for utasítás a ciklusfolytató részére adódik át, vagyis a ciklus végére.
+                <programlisting><![CDATA[continue;]]></programlisting>
+            </para>
+            <para>
+                A return a függvény hívójához tér vissza.
+                <programlisting><![CDATA[return;]]></programlisting>
+            </para>
+            <para>
+                A goto utasítás a feltétel nélküli vezérlés átadásnál használatos
+                <programlisting><![CDATA[goto azonosító;]]></programlisting>
+            </para>
+            <para>
+                A címkézett utasítás arra jó hogy, bármely utasítást megelőzhetik az <programlisting><![CDATA[azonosító;]]></programlisting> előtagok, amelyek cimkeként szolgálnak, ezeket használja a goto utasítás.
+            </para>
+            <para>
+                A nulla utasítás alakja a <programlisting><![CDATA[;]]></programlisting> hordozhat címkét vagy üres ciklus törzset is képezhet.
+            </para>
+            
+            <para>
+                A két fontos eltérés a verziók között, ami még nincs a régebbiben, hogy nincsenek //-típusú kommentek, és a for cikluson belül nem lehet deklarálni változót.Lásd.: forrásban
+            </para>
+    </section>                     
+
+    <section>
+        <title>Saját lexikális elemző</title>
+        <para>
+            Írj olyan programot, ami számolja a bemenetén megjelenő valós számokat! 
+            Nem elfogadható olyan megoldás, amely maga olvassa betűnként a bemenetet, 
+            a feladat lényege, hogy lexert használjunk, azaz óriások vállán álljunk és ne kispályázzunk!
+        </para>
+        <para>
+            Megoldás videó: 
+        </para>
+        <para>
+            Megoldás forrása:  <link xlink:href="masodik/lex/real.c">
+                <filename>Prog1/repo/bhax/thematic_tutorials/bhax_textbook/masodik/lex/real.c</filename>
+            </link> 
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+            <programlisting><![CDATA[%{
+#include <stdio.h>
+#include <string.h>
+int valos_szamok = 0;   
+%}
+szam [0-9]
+%%
+{szam}*(\.{szam}+)? {++valos_szamok; 
+	printf("[valossz=%s %f]", yytext, atof(yytext));}
+%%
+int main()
+{
+	yylex ();
+	printf("Valós számok darabszáma: %d\n", valos_szamok);
+	return 0;
+}
+]]></programlisting>
+            A lexer, más néven lexikális analízis egy olyan folyamat amely egy inputon bemenő karaktereket tokenekre alakítják át. A forrás feladatomban lévő lexer, arra van kialakítva, hogy a 0-9-ig terjedő számokat megkeresse. Ebből áll a forrásom eleje is, azt mutatjuk meg a programnak hogy azokat keresse.
+            Miután lefut a programunk, kiírja az inputon beérkezett valós számok darabszámát.
+        </para>
+    </section>                     
+
+    <section>
+        <title>l33t.l</title>
+        <para>
+            Lexelj össze egy l33t ciphert!
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href="https://www.youtube.com/watch?v=06C_PqDpD_k">BN L33t Stream</link>
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="masodik/l33t/leet.c">
+                <filename>leet.c</filename>
+            </link> 
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+            
+            A lexereket felhasználva és egy kicsit módosítva az előző példánkból, összerakhatunk egy l33t cipher-t is. A cipherek egy kódolásra illetve dekódolásra alkalmas lexikális algoritmusok.
+            A l33t(értsd. leet) egy olyan online kreált nyelv, melynek alapja lehet bármely nyelv, a l33t viszont a betűket kicseréli hasonló karakterekre, melyeket szintén ellehet olvasni, és értelmezni őket, mint az eredeti nyelvet.
+            Példa lehet a 'e' betű és a '3' cseréje, vagy a 't' és a '7'-es cseréje. A leet cipher hasonló alapokon működik mint a lexer, csak például kap egy tömböt amely tartalmazza a betűket és azoknak a helyettesítéseit, hogy mire lehet kicserélni, mert egy betűnek több leet megfelelője is lehet.
+        </para>
+    </section>                     
+
+
+    <section>
+        <title>A források olvasása</title>
+        <para>
+            Hogyan olvasod, hogyan értelmezed természetes nyelven az alábbi kódcsipeteket? Például
+            <programlisting><![CDATA[if(signal(SIGINT, jelkezelo)==SIG_IGN)
+    signal(SIGINT, SIG_IGN);]]></programlisting>
+            Ha a SIGINT jel kezelése figyelmen kívül volt hagyva, akkor ezen túl is legyen
+            figyelmen kívül hagyva, ha nem volt figyelmen kívül hagyva, akkor a jelkezelo függvény
+            kezelje. (Miután a <command>man 7 signal</command> lapon megismertem a SIGINT jelet, a
+            <command>man 2 signal</command> lapon pedig a használt rendszerhívást.)
+        </para>
+
+        <caution>
+            <title>Bugok</title>
+            <para>
+                Vigyázz, sok csipet kerülendő, mert bugokat visz a kódba! Melyek ezek és miért? 
+                Ha nem megy ránézésre, elkapja valamelyiket esetleg a splint vagy a frama?
+            </para>
+        </caution>
+            
+        <orderedlist numeration="lowerroman">
+            <listitem>                                    
+                <programlisting><![CDATA[if(signal(SIGINT, SIG_IGN)!=SIG_IGN)
+    signal(SIGINT, jelkezelo);]]></programlisting>
+            </listitem>
+            <listitem>                                    
+                <programlisting><![CDATA[for(i=0; i<5; ++i)]]></programlisting>            
+            </listitem>
+            <listitem>                                    
+
+                <programlisting><![CDATA[for(i=0; i<5; i++)]]></programlisting>            
+            </listitem>
+            <listitem>                                    
+
+                <programlisting><![CDATA[for(i=0; i<5; tomb[i] = i++)]]></programlisting>            
+            </listitem>
+            <listitem>                                    
+
+                <programlisting><![CDATA[for(i=0; i<n && (*d++ = *s++); ++i)]]></programlisting>            
+            </listitem>
+            <listitem>                                    
+
+                <programlisting><![CDATA[printf("%d %d", f(a, ++a), f(++a, a));]]></programlisting>            
+            </listitem>
+            <listitem>                                    
+
+                <programlisting><![CDATA[printf("%d %d", f(a), a);]]></programlisting>            
+            </listitem>
+            <listitem>                                    
+
+                <programlisting><![CDATA[printf("%d %d", f(&a), a);]]></programlisting>            
+            </listitem>
+        </orderedlist>
+        <para>
+            Megoldás forrása:  
+        </para>
+
+        <para>
+            Megoldás videó: 
+        </para>
+
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+            
+        </para>
+        
+        <para>II. Az i változó nincs deklarálva és ha lenne deklarálva, akkor a ciklus elszámolna 4 ig, majd megáll, az ++i inkrementáció miatt.</para>
+        <para>III. Ugyanaz mint az előző, csak utólag inkrementálódik, és szintén nincs az int deklarálva.</para>
+        <para>IV. Egy tömböt próbálunk változó inkrementálással feltölteni, az 'i' itt sincs deklarálva.</para>
+        <para>V. Az i vátozót addig növeljük míg nem lesz egyenlő n-1-el és mindeközben teljesül a (*d++ = *s++) feltétel. Itt, a *s++-el a pointert inkrementáljuk,
+            nem azt amire mutat,és ezt fogjuk átadni a *d++ szintén előbb növelt pointernek. Bug, hogy az ÉS logikai művelet jobb oldalán nem boolean van.</para>
+         <para>
+            VI. Az 'f' függvénnyel két decimális számot szeretnénk kiíratni, a probléma ott adódik, hogy utána az argumentumok sorrendjének hiánya miatt definiálatlanok, és módosíthatják egymást. 
+        </para> 
+        <para>
+            VII. Szintén két decimális szám kiiratásáról van szó, csak az egyik szám az egy 'f' függvény argumentuma ként van megadva, a másik meg csak maga a számként.
+        </para>  
+        <para>
+            VIII. Itt is két szám kiíratásáról van szó, az elsőnél f függvénynek megadjuk az 'a' változónak a címét majd a függvény az erre a változóra mutató értéket fogja inkrementálni, a másik szám meg maga az 'a' változó értéke.
+        </para>
+        
+
+    </section>                     
+
+    <section>
+        <title>Logikus</title>
+        <para>
+            Hogyan olvasod természetes nyelven az alábbi Ar nyelvű formulákat?
+        </para>
+        <programlisting language="tex"><![CDATA[$(\forall x \exists y ((x<y)\wedge(y \text{ prím})))$ 
+
+$(\forall x \exists y ((x<y)\wedge(y \text{ prím})\wedge(SSy \text{ prím})))$ 
+
+$(\exists y \forall x (x \text{ prím}) \supset (x<y)) $ 
+
+$(\exists y \forall x (y<x) \supset \neg (x \text{ prím}))$
+]]></programlisting>        
+        <para>
+            Megoldás forrása: <link xlink:href="https://gitlab.com/nbatfai/bhax/blob/master/attention_raising/MatLog_LaTeX">https://gitlab.com/nbatfai/bhax/blob/master/attention_raising/MatLog_LaTeX</link>
+        </para>
+
+        <para>
+            Megoldás videó: <link xlink:href="https://youtu.be/ZexiPy3ZxsA">https://youtu.be/ZexiPy3ZxsA</link>, <link xlink:href="https://youtu.be/AJSXOQFF_wk">https://youtu.be/AJSXOQFF_wk</link>
+        </para>
+
+        <para> I. Végtelen sok prímszám van.
+              
+        </para>
+        <para> II. Végtelen sok iker-prímszám van.
+              
+        </para>
+        <para> III. Véges sok prímszám van.
+            
+        </para>  
+        <para> IV. Véges sok prímszám van.
+             
+        </para> 
+
+    </section>                                                                                                                                                                            
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+    <section>
+        <title>Deklaráció</title>
+            
+        <para>
+            Vezesd be egy programba (forduljon le) a következőket: 
+        </para>
+
+        <itemizedlist>
+            <listitem>
+                <para>egész</para>                        
+            </listitem>
+            <listitem>
+                <para>egészre mutató mutató</para>                        
+            </listitem>
+            <listitem>
+                <para>egész referenciája</para>                        
+            </listitem>
+            <listitem>
+                <para>egészek tömbje</para>                        
+            </listitem>
+            <listitem>
+                <para>egészek tömbjének referenciája (nem az első elemé)</para>                        
+            </listitem>
+            <listitem>
+                <para>egészre mutató mutatók tömbje</para>                        
+            </listitem>
+            <listitem>
+                <para>egészre mutató mutatót visszaadó függvény</para>                        
+            </listitem>
+            <listitem>
+                <para>egészre mutató mutatót visszaadó függvényre mutató mutató</para>                        
+            </listitem>
+            <listitem>
+                <para>egészet visszaadó és két egészet kapó függvényre mutató mutatót visszaadó, egészet kapó függvény</para>                        
+            </listitem>            
+            <listitem>
+                <para>függvénymutató egy egészet visszaadó és két egészet kapó függvényre mutató mutatót visszaadó, egészet kapó függvényre</para>                        
+            </listitem>            
+        </itemizedlist>            
+
+       <para>
+            Mit vezetnek be a programba a következő nevek?
+        </para>
+
+        <itemizedlist>
+            <listitem>
+                <programlisting><![CDATA[int a;]]></programlisting>            
+            </listitem>
+            <listitem>
+                <programlisting><![CDATA[int *b = &a;]]></programlisting>            
+            </listitem>
+            <listitem>
+                <programlisting><![CDATA[int &r = a;]]></programlisting>            
+            </listitem>
+            <listitem>
+                <programlisting><![CDATA[int c[5];]]></programlisting>            
+            </listitem>
+            <listitem>
+                <programlisting><![CDATA[int (&tr)[5] = c;]]></programlisting>            
+            </listitem>
+            <listitem>
+                <programlisting><![CDATA[int *d[5];]]></programlisting>            
+            </listitem>
+            <listitem>
+                <programlisting><![CDATA[int *h ();]]></programlisting>            
+            </listitem>
+            <listitem>
+                <programlisting><![CDATA[int *(*l) ();]]></programlisting>            
+            </listitem>
+            <listitem>
+                <programlisting><![CDATA[int (*v (int c)) (int a, int b)]]></programlisting>            
+            </listitem>            
+            <listitem>
+                <programlisting><![CDATA[int (*(*z) (int)) (int, int);]]></programlisting>            
+            </listitem>            
+        </itemizedlist>       
+
+
+        <para>
+            Megoldás videó: 
+        </para>
+        <para>
+            Megoldás forrása:  <link xlink:href="masodik/dekla/dekla.cpp">
+                <filename>dekla.cpp</filename>
+            </link>
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+            Forrásban megtalálhatóak a bevezetések.
+            </para>
+                
+                <programlisting><![CDATA[an7hr0x@an7hr0xPC:~/Prog1/repo/bhax/thematic_tutorials/bhax_textbook/masodik/dekla$ ./dekla
+5
+5
+0x601070
+0
+1
+2
+3
+4
+0x601080]]></programlisting>            
+            
+
+        
+    </section>                     
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+</chapter>                
+
+

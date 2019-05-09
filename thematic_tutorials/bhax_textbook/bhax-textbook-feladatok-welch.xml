@@ -1,0 +1,537 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Welch!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+    <section>
+        <title>Első osztályom</title>
+        <para>
+            Valósítsd meg C++-ban és Java-ban az módosított polártranszformációs algoritmust! A matek háttér 
+            teljesen irreleváns, csak annyiban érdekes, hogy az algoritmus egy számítása során két normálist
+            számol ki, az egyiket elspájzolod és egy további logikai taggal az osztályban jelzed, hogy van vagy
+            nincs eltéve kiszámolt szám.
+        </para>
+        <para>
+            Megoldás videó:
+        </para>
+        <para>
+            Megoldás forrása:  <link xlink:href="otodik/polar/polar.cpp">
+                <filename>CPP Polar</filename> </link> , 
+                <link xlink:href="otodik/polar/polar.java">
+                    <filename>Java Polar</filename>  
+                </link>          
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat... térj ki arra is, hogy a JDK forrásaiban a Sun programozói
+            pont úgy csinálták meg ahogyan te is, azaz az OO nemhogy nem nehéz, hanem éppen természetes neked!
+        </para>   
+        
+        <para>
+            
+            C++-ban megvalósítva az eredmény:
+
+<programlisting><![CDATA[
+an7hr0x@an7hr0xPC:~/Prog1/repo/bhax/thematic_tutorials/bhax_textbook/otodik/polar$ g++ polar.cpp -o polar
+an7hr0x@an7hr0xPC:~/Prog1/repo/bhax/thematic_tutorials/bhax_textbook/otodik/polar$ ./polar
+0.691468
+-0.388269
+0.254064
+0.460803
+1.17808
+0.0145214
+-0.0130577
+-1.57915
+-1.17233
+-0.187721
+]]></programlisting>
+
+<programlisting language="c++">
+<![CDATA[ 
+#include <cstdlib>
+#include <cmath>
+#include <ctime>
+#include <iostream>
+class PolarGen
+{
+public:
+  PolarGen ()
+  {
+    nincsTarolt = true;
+    std::srand (std::time (NULL));
+  }
+   ~PolarGen ()
+  {
+  }
+double kovetkezo ()
+{
+  if (nincsTarolt)
+    {
+      double u1, u2, v1, v2, w;
+      do
+	{
+	  u1 = std::rand () / (RAND_MAX + 1.0);
+	  u2 = std::rand () / (RAND_MAX + 1.0);
+	  v1 = 2 * u1 - 1;
+	  v2 = 2 * u2 - 1;
+	  w = v1 * v1 + v2 * v2;
+	}
+      while (w > 1);
+      double r = std::sqrt ((-2 * std::log (w)) / w);
+      tarolt = r * v2;
+      nincsTarolt = !nincsTarolt;
+      return r * v1;
+    }
+  else
+    {
+      nincsTarolt = !nincsTarolt;
+      return tarolt;
+    }
+}
+private:
+  bool nincsTarolt;
+  double tarolt;
+};
+int main (int argc, char **argv)
+{
+  PolarGen pg;
+  for (int i = 0; i < 10; ++i)
+    std::cout << pg.kovetkezo () << std::endl;
+  return 0;
+}
+]]>
+        </programlisting>
+        </para>
+        
+        <para>
+            És javaban megvalósítva:
+            <programlisting language="java">
+<![CDATA[ 
+public class PolárGenerátor {
+    
+    boolean nincsTárolt = true;
+    double tárolt;
+    
+    public PolárGenerátor() {
+        
+        nincsTárolt = true;
+        
+    }
+    
+    public double következő() {
+        
+        if(nincsTárolt) {
+            
+            double u1, u2, v1, v2, w;
+            do {
+                u1 = Math.random();
+                u2 = Math.random();
+                
+                v1 = 2*u1 - 1;
+                v2 = 2*u2 - 1;
+                
+                w = v1*v1 + v2*v2;
+                
+            } while(w > 1);
+            
+            double r = Math.sqrt((-2*Math.log(w))/w);
+            
+            tárolt = r*v2;
+            nincsTárolt = !nincsTárolt;
+            
+            return r*v1;
+            
+        } else {
+            nincsTárolt = !nincsTárolt;
+            return tárolt;
+        }
+    }
+    
+    public static void main(String[] args) {
+        
+        PolárGenerátor g = new PolárGenerátor();
+        
+        for(int i=0; i<10; ++i)
+            System.out.println(g.következő());
+        
+    }
+    
+}
+]]>
+        </programlisting>  
+        </para>
+    </section>        
+
+    <section>
+        <title>LZW</title>
+        <para>
+            Valósítsd meg C-ben az LZW algoritmus fa-építését!
+        </para>
+        <para>
+            Megoldás videó:
+        </para>
+        <para>
+            Megoldás forrása:  <link xlink:href="otodik/z3a7c/z3.c">
+                    <filename>Binfa</filename>  
+                </link>               
+        </para>
+        
+        <para>
+            A programunk egy olyan algoritmus mely a bemenő bináris adatokat fa struktúrában ábrázolja, az algoritmus megalkotója Abraham Lempel, Jacob Ziv, és Terry Welch. Ez az algoritmus veszteségmentes tömörítést eredményez, melyet sok kiterjesztés is használ például, a .gif, vagy tömörítő programok mint a gzip, zip.
+            Miután az input adatok bekerülésekor a program a gyökértől kiindulva addig követjük a fa ágait, amíg egy olyan részsztringhez nem érünk mely már nem található meg a fában. Ekkor a részsztring utolsó karakterével ami pont feldolgozás alatt van bővítjuk a fát.
+            A következő bemenetnél egy új részsztringet újra a gyökértől végigfuttatjuk. Így kapjuk meg az LZW Bináris fánkat.
+            <screen>an7hr0x@an7hr0xPC:~/Prog1/repo/bhax/thematic_tutorials/bhax_textbook/otodik/z3a7c$ ./z3 &lt;old
+
+almafa
+
+
+------------1(4)
+---------1(3)
+------1(2)
+---/(1)
+melyseg=4</screen>
+
+        </para>
+        
+    </section>        
+        
+    <section>
+        <title>Fabejárás</title>
+        <para>
+            Járd be az előző (inorder bejárású) fát pre- és posztorder is!
+        </para>
+        <para>
+            Megoldás videó:
+        </para>
+        <para>
+            Megoldás forrása:   <link xlink:href="otodik/pip/z3i.c">
+                    <filename>Binfa Inorder</filename>  
+                </link>, <link xlink:href="otodik/pip/z3pre.c">
+                    <filename>Binfa Preorder</filename>  
+                </link>, <link xlink:href="otodik/pip/z3pos.c">
+                    <filename>Binfa Postorder</filename>  
+                </link>             
+        </para>
+        <para>
+            A fákat 3 módon tudjuk bejárni, preorder inorder és posztorder. Ezek azt jelentik hogy ha egy nem üres fán
+            végig akarunk menni hogy indulunk el. Az inorder bejárásnál a fánk bal részfájával kezdünk, majd jön a gyökér
+            és végül a jobb részfa. Preordernél ez úgy néz ki hogy gyökér, bal oldal és jobb oldal, majd postordernél bal oldal, jobb oldal és végül a gyökér.
+            A LZWBinfánk alapból inorder bejárású, melynek a bejárását a következő forráskód részletnél lehet megszabni.
+            <programlisting language="c">
+<![CDATA[ 
+void
+kiir (BINFA_PTR elem)
+{
+  if (elem != NULL)
+    {
+      ++melyseg;
+      if (melyseg > max_melyseg)
+	    max_melyseg = melyseg;
+      kiir (elem->jobb_egy);
+      for (int i = 0; i < melyseg; ++i)
+	    printf ("---");
+      printf ("%c(%d)\n", elem->ertek < 2 ? '0' + elem->ertek : elem->ertek,
+	      melyseg);
+      kiir (elem->bal_nulla);
+      --melyseg;
+    }
+}
+]]>
+        </programlisting>
+        
+        Preordernél a következő a helyzet:
+        
+        <programlisting language="c">
+    <![CDATA[ 
+void
+kiir (BINFA_PTR elem)
+{
+  if (elem != NULL)
+    {
+      ++melyseg;
+      if (melyseg > max_melyseg)
+	    max_melyseg = melyseg;
+      for (int i = 0; i < melyseg; ++i)
+	    printf ("---");
+      printf ("%c(%d)\n", elem->ertek < 2 ? '0' + elem->ertek : elem->ertek,
+	      melyseg);
+      kiir (elem->bal_nulla);
+      kiir (elem->jobb_egy);
+      --melyseg;
+    }
+}
+]]>
+</programlisting>
+
+    Postordernél végül így néz ki a kiir függvényünk:
+    
+    <programlisting language="c">
+    <![CDATA[ 
+void
+kiir (BINFA_PTR elem)
+{
+  if (elem != NULL)
+    {
+      ++melyseg;
+      if (melyseg > max_melyseg)
+	    max_melyseg = melyseg;
+      kiir (elem->bal_nulla);
+      kiir (elem->jobb_egy);
+      for (int i = 0; i < melyseg; ++i)
+	    printf ("---");
+      printf ("%c(%d)\n", elem->ertek < 2 ? '0' + elem->ertek : elem->ertek,
+	      melyseg);
+      --melyseg;
+    }
+}
+]]> 
+</programlisting>
+    
+<screen>
+    an7hr0x@an7hr0xPC:~/Prog1/repo/bhax/thematic_tutorials/bhax_textbook/otodik/pip$ ./z3i &lt;old
+
+01011101011010110101111
+
+
+
+------------1(4)
+---------1(3)
+------------0(4)
+------1(2)
+---------------1(5)
+------------1(4)
+---------------0(5)
+---------0(3)
+---/(1)
+---------1(3)
+------0(2)
+melyseg=5an7hr0x@an7hr0xPC:~/Prog1/repo/bhax/thematic_tutorials/bhax_textbook/ot ./z3pre &lt;old
+
+01011101011010110101111
+
+
+
+---/(1)
+------0(2)
+---------1(3)
+------1(2)
+---------0(3)
+------------1(4)
+---------------0(5)
+---------------1(5)
+---------1(3)
+------------0(4)
+------------1(4)
+melyseg=5an7hr0x@an7hr0xPC:~/Prog1/repo/bhax/thematic_tutorials/bhax_textbook/ot ./z3pos &lt;old
+
+01011101011010110101111
+
+
+
+---------1(3)
+------0(2)
+---------------0(5)
+---------------1(5)
+------------1(4)
+---------0(3)
+------------0(4)
+------------1(4)
+---------1(3)
+------1(2)
+---/(1)
+</screen>
+        </para>
+    </section>        
+                        
+    <section>
+        <title>Tag a gyökér</title>
+        <para>
+            Az LZW algoritmust ültesd át egy C++ osztályba, legyen egy Tree és egy beágyazott Node
+            osztálya. A gyökér csomópont legyen kompozícióban a fával!
+        </para>
+        <para>
+            Megoldás videó:
+        </para>
+        <para>
+            Megoldás forrása:   <link xlink:href="otodik/z3a7/z3a7.cpp">
+                    <filename>Binfa CPP</filename>  
+                </link>              
+        </para>
+        
+        <para>
+            Itt az osztályban a fa gyökere nem egy pointer, hanem egy object. A fa a mutató, ami mindig a jelenleg létrejövő fa csomópontjára mutat. A LZWBinFa konstruktor ráállítja a fa pointert a gyökerére, a dekonstruktorban pedig felszabadítjuk a gyökérnek a gyerekeit. &lt;&lt; operátort túlterheljük, és az inputot ezek alapján tesszük be a fába. Ha az input karakter 0, akkor megnézzük hogy a jelenlegi csomópuntunknak létezik-e 0-ás gyereke, vagyis a fa pointer éppen rá mutat-e.
+            Ha nincs neki, akkor példányosítjuk a 0-betűt és új csomópontot hozunk létre. Ezek után a jelenlegi csompontunk 0-ás gyermekét ráállítjuk az új csomópontra, majd a fával visszaállunk a gyökérre.
+            Ha van 0-ás gyerek, akkor pedig a fa pointert ráállítjuk. Ha 1-es karakter van, akkor ugyan ez történik.
+            
+            <programlisting language="c++">
+    <![CDATA[ 
+class LZWBinFa
+{
+public:
+   LZWBinFa ():fa (&gyoker)
+    {
+    }
+    ~LZWBinFa ()
+    {
+        szabadit (gyoker.egyesGyermek ());
+        szabadit (gyoker.nullasGyermek ());
+    }
+    void operator<< (char b) 
+    {
+        
+        if (b == '0')
+        {
+          
+            if (!fa->nullasGyermek ())
+            {
+                
+                Csomopont *uj = new Csomopont ('0');
+                fa->ujNullasGyermek (uj);
+                fa = &gyoker;
+            }
+            else			
+            {
+                
+                fa = fa->nullasGyermek ();
+            }
+        }
+       
+        else
+        {
+            if (!fa->egyesGyermek ())
+            {
+                Csomopont *uj = new Csomopont ('1');
+                fa->ujEgyesGyermek (uj);
+                fa = &gyoker;
+            }
+            else
+            {
+                fa = fa->egyesGyermek ();
+            }
+        }
+    }
+]]> 
+</programlisting> 
+
+        Futtatáskor a helyes argumentum megadásnál kell egy bemenő és egy kimenő fájl, melyből olvasunk és melybe írunk.
+<screen>
+    an7hr0x@an7hr0xPC:~/Prog1/repo/bhax/thematic_tutorials/bhax_textbook/otodik/z3a7$ ./binnfa old -o new
+an7hr0x@an7hr0xPC:~/Prog1/repo/bhax/thematic_tutorials/bhax_textbook/otodik/z3a7$ 
+</screen>
+        </para>
+    </section>        
+                
+    <section>
+        <title>Mutató a gyökér</title>
+        <para>
+            Írd át az előző forrást, hogy a gyökér csomópont ne kompozícióban, csak aggregációban legyen a 
+            fával!
+        </para>
+        <para>
+            Megoldás videó: 
+        </para>
+        <para>
+            Megoldás forrása:  <link xlink:href="otodik/z3a7m/z3a7m.cpp">
+                    <filename>Binfa CPP muti</filename>  
+                </link> 
+        </para>
+        
+        <para>
+            Itt az az eltérés az előzőhöz képest, hogy a fa pointert ráállítjuk a gyökérre a konstruktorban.
+            De most a gyökér is pointer lesz, ezért ahol az előző forrásban referenciaként adtuk át a gyökeret a fa pointernek, itt referencia nélkül tesszük. De még példányosítjuk is a konstruktorban a gyökeret, helyet is foglalunk neki a memóriában és erre állítjuk rá a fát. És végezetül felszabadításkor  a pont helyett nyilat használunk ha a mutató mutatóit kell elérni.
+        </para>
+        
+        <programlisting language="c">
+    <![CDATA[ 
+public:
+    
+   LZWBinFa ()
+    {
+		gyoker = new Csomopont();
+		fa = gyoker;
+    }
+    ~LZWBinFa ()
+    {
+		
+        szabadit (gyoker->egyesGyermek ());
+        szabadit (gyoker->nullasGyermek ());
+        delete gyoker;
+    }
+]]> 
+</programlisting> 
+<programlisting language="c">
+    <![CDATA[ 
+protected:			
+    Csomopont *gyoker;
+};
+]]> 
+</programlisting> 
+    </section>                     
+
+    <section>
+        <title>Mozgató szemantika</title>
+        <para>
+            Írj az előző programhoz mozgató konstruktort és értékadást, a mozgató konstruktor legyen a mozgató
+            értékadásra alapozva!
+        </para>
+        <para>
+            Megoldás videó: 
+        </para>
+        <para>
+            Megoldás forrása:  <link xlink:href="otodik/z3a7mozg/z3a7mc.cpp">
+                    <filename>Binfa CPP cctor</filename>  
+                </link>
+        </para>
+        
+        <para>
+            <programlisting language="c++">
+    <![CDATA[ 
+LZWBinFa ( const LZWBinFa & regi ) {
+          std::cout << "LZWBinFa copy ctor" << std::endl;
+          gyoker.ujEgyesGyermek ( masol ( regi.gyoker.egyesGyermek (), regi.fa ) );
+          gyoker.ujNullasGyermek ( masol ( regi.gyoker.nullasGyermek (), regi.fa ) );
+          if ( regi.fa == & ( regi.gyoker ) )
+               fa = &gyoker;
+     }
+    
+LZWBinFa ( LZWBinFa && regi ) {
+          std::cout << "LZWBinFa move ctor" << std::endl;
+          gyoker.ujEgyesGyermek ( regi.gyoker.egyesGyermek() );
+          gyoker.ujNullasGyermek ( regi.gyoker.nullasGyermek() );
+          regi.gyoker.ujEgyesGyermek ( nullptr );
+          regi.gyoker.ujNullasGyermek ( nullptr );
+     }
+]]>
+</programlisting> 
+<programlisting language="c++">
+    <![CDATA[ 
+ Csomopont *  masol ( Csomopont * elem, Csomopont * regifa ) {
+          Csomopont * ujelem = NULL;
+          if ( elem != NULL ) {
+               ujelem = new Csomopont ( elem->getBetu() );
+               ujelem->ujEgyesGyermek ( masol ( elem->egyesGyermek (), regifa ) );
+               ujelem->ujNullasGyermek ( masol ( elem->nullasGyermek (), regifa ) );
+               if ( regifa == elem )
+                    fa = ujelem;
+          }
+          return ujelem;
+     }
+]]>
+</programlisting> 
+<programlisting language="c++">
+    <![CDATA[ 
+LZWBinFa binFa3 = std::move ( binFa );
+     kiFile << "depth = " << binFa3.getMelyseg () << std::endl;
+     kiFile << "mean = " << binFa3.getAtlag () << std::endl;
+     kiFile << "var = " << binFa3.getSzoras () << std::endl;
+]]>
+</programlisting> 
+
+
+
+        </para>
+        
+    </section>                     
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+</chapter>                

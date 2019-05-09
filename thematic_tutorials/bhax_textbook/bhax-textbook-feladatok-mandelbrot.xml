@@ -1,0 +1,267 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Mandelbrot!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+    <section>
+        <title>A Mandelbrot halmaz</title>
+        <para>
+                
+        </para>
+        <para>
+            Megoldás forrása:   <link xlink:href="negyedik/mandelbrot/mandel.cpp">
+                <filename>Mandel</filename>
+            </link>             
+        </para>
+        <para><mediaobject>
+                <imageobject>
+                    <imagedata fileref="negyedik/mandelbrot/mandel.png" scale="20" />
+                </imageobject>
+            </mediaobject>
+        </para>
+        <para>
+            A Mandelbrot halmaz a komplex számsíkon egy halmaz, melyet Benoit Mandelbrot talált meg. Célja nehezen értelmezhető kérdésekre válasz adása volt, például hogy a -9 et mely két szám összeszorzásával kapjuk meg. Az ikonikus képet úgy kapjuk meg, hogy a sík origója középpontú 4 oldalhosszúságú négyzetbe lefektetünk egy például 800x800 pixeles rácsot és kiszámítjuk hogy a rács pontjai mely komplex számoknak felelnek meg. A rács összes pontját megvizsgáljuk a z<subscript>n+1</subscript>=z<subscript>n</subscript>
+            <superscript>2</superscript>+c, 
+            (0&lt;=n)
+            képlet alapján. A képletben a z-ket vizsgáljuk meg azon szempont szerin hogy kivezet e a 2 sugarú körből vagy nem. Ha nem lép ki akkor feketére szinezzük hogy a c rácspont a halmaz része.Ez alapján működik a programunk is, persze ennél bonyolultabb a valóságban. Forditáshoz szükségünk lesz a png könyvtárra, és meg is kapjuk a kész png képünket a halmazról, mely kép bizonyos dolgok átirásával a forrásunkban szinezhető, és formázható.
+        </para>
+    </section>        
+        
+    <section>
+        <title>A Mandelbrot halmaz a <filename>std::complex</filename> osztállyal</title>
+        <para>
+                
+        </para>
+        <para>
+            Megoldás videó: </para><mediaobject>
+                <imageobject>
+                    <imagedata fileref="negyedik/compl/mandel.png" scale="20" />
+                </imageobject>
+            </mediaobject>
+        
+        <para>
+            Megoldás forrása:  <link xlink:href="negyedik/compl/cmandel.cpp">
+                <filename>std::complex Mandel</filename>
+            </link>               
+        </para>
+        
+        <para>
+            Hogy komplex számokkal tudjunk számolni, importálni kell a komplex osztályt c++-ban. A programunk hasonlít az előzőhöz, ugyan az a lényege és működési elve(mármint Mandelbrot képlete).
+            A programunkban for ciklusokkal végig megyünk a háló oszlopain és sorain. A reC és imC a háló rácspontjait számoljuk ki és a 
+            rácspontokhoz tartozó komplex számokat pedig a  complex osztály segítségével számítjuk ki.Ha az iterációs határ elérése miatt kell kilépnünk a while ciklusból, akkor ebben a pontban az iterációnk konvergens és a Mandelbrot 
+            halmaz elemének vesszük, és feketére szinezzük be. Futtatáskor meg kel adni megin a png könyvtár használatát, a kép nevét, meg hogy milyen számitásokkal dolgozzon a programunk.
+        </para>
+    </section>        
+                
+    <section>
+        <title>Biomorfok</title>
+        <para>
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href="https://youtu.be/IJMbgRzY76E">https://youtu.be/IJMbgRzY76E</link>
+        </para>
+        <mediaobject>
+                <imageobject>
+                    <imagedata fileref="negyedik/biomorf/kep.png" scale="20" />
+                </imageobject>
+            </mediaobject>
+        <para>
+            Megoldás forrása: <link xlink:href="https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/Biomorf">https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/Biomorf</link>
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+        </para>      
+        <para>
+            A biomorfok olyan matematikailag leképzett fraktál alakzatok, melyek hasonlitanak egy organizmus mikroszkópos képére. Mi itt komplex számsíkon vett fraktálokra gondolunk ennél a feladatnál. Híresebb fraktáloknak számítanak a 90'-es években felfedezett Júlia-halmazok, a jól ismert Mandelbrot Halmaz és a 86'ban véletlenül felfedezett Biomorfok.
+            A Mandelbrot és a Júlia halmaz közti különbség csekély, csupán a "c" szám az utóbbinál konstans, Mandelnél meg változó egy iterációban.
+            Futtatni a programunkat, a következőképp lehet
+            <programlisting><![CDATA[
+./biomorf kep.png 800 800 10 -2 2 -2 2 .285 0 10
+]]></programlisting>
+
+        </para>
+                                            
+    </section>                     
+
+    <section>
+        <title>A Mandelbrot halmaz CUDA megvalósítása</title>
+        <para>
+        </para>
+        <para>
+            Megoldás videó: 
+        </para>
+        <mediaobject>
+                <imageobject>
+                    <imagedata fileref="negyedik/cuda/cuda.png" scale="35" />
+                </imageobject>
+            </mediaobject>
+        <para>
+            Megoldás forrása:  
+        </para>
+        <para>
+            A CUDA technológia az NVIDIA tulajdona és fejlesztése, a videókártyát használja a számításokhoz. A cuda segítségével a mandelbrot halmazt kb 70x gyorsabban tudnánk legenerálni. A használathoz NVIDIA-s videókártya kell csak. Nekem minden hibátlanul is működött kivéve a végeredményt mert az egy fehért kép lett. Próbáltam több forrásból beszerezni a CUDA-s mandelbrto halmaz forrását, de mindegyiknél valami errort dobott ki és jelenleg is még próbálkozás fázisban tart a kép felélesztése.
+        
+        </para>
+    </section>                     
+
+    <section>
+        <title>Mandelbrot nagyító és utazó C++ nyelven</title>
+        <para>
+            Építs GUI-t a Mandelbrot algoritmusra, lehessen egérrel nagyítani egy területet, illetve egy pontot
+            egérrel kiválasztva vizualizálja onnan a komplex iteréció bejárta z<subscript>n</subscript> komplex számokat!
+        </para>
+            
+        <para>
+            Megoldás forrása:  <link xlink:href="negyedik/nagy/main.cpp">
+                <filename>Utazo Mandel</filename>
+            </link> 
+        </para>
+
+        <para>
+            Megoldás videó: 
+        </para>
+        <para>
+            Az utazó / nagyító lényege a következő. Először is veszünk egy alap leképzett mandelbrot halmazt, és azt teszi lehetővé a programunk, hogy ha abba bele nagyítunk esetleg mozgatjuk is a képet, folyamatosan generálja le a folytatását, igy egy végtelen fraktált kapva. A programom lefordulásánál egy hibába akadtam, melynek a megjavitásán még jelenleg is dolgozok.
+            <screen>an7hr0x@an7hr0xPC:~/Prog1/repo/bhax/thematic_tutorials/bhax_textbook/negyedik/nagy$ g++ main.cpp -o main
+main.cpp:20:24: fatal error: QApplication: No such file or directory
+compilation terminated.
+an7hr0x@an7hr0xPC:~/Prog1/repo/bhax/thematic_tutorials/bhax_textbook/negyedik/nagy$</screen>
+        </para>
+    </section>                     
+                                                                                                                                                                            
+    <section>
+        <title>Mandelbrot nagyító és utazó Java nyelven</title>
+        <para>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="negyedik/java/java.png" scale="25" />
+                </imageobject>
+            </mediaobject>
+        </para>
+        <para>
+            A java mandelbrothalmaz nagyító nagyon hasonlit a c++-os megoldáshoz, itt is kapunk egy ablakot melyben bennevan a halmazunk, és a balklikkel tudjuk kijelölni hogy hova és mekkora területre nagyítsunk rá, miután kiválasztottuk megmutatja egy új képen azt a területet.Amikor fut a programunk még tudunk olyat is csinálni hogy ha az s billentyűt megnyomjuk akkor a jelenleg megjelenített halmazról csinál nekünk egy screenshotot, továbbá ha az n gombot nyomjuk meg, akkor a számítások iterációs határát is tudjuk növelni, ezzel növelődik a pontosság.
+        </para>
+        <para>
+            
+            <programlisting language="java"><![CDATA[
+
+              public class MandelbrotHalmazNagyító extends MandelbrotHalmaz {
+
+    private int x, y;
+
+    private int mx, my;
+
+    public MandelbrotHalmazNagyító(double a, double b, double c, double d,
+            int szélesség, int iterációsHatár) {
+
+        super(a, b, c, d, szélesség, iterációsHatár);
+        setTitle("A Mandelbrot halmaz nagyításai");
+
+        addMouseListener(new java.awt.event.MouseAdapter() {
+
+            public void mousePressed(java.awt.event.MouseEvent m) {
+
+                x = m.getX();
+                y = m.getY();
+                mx = 0;
+                my = 0;
+                repaint();
+            }
+
+            public void mouseReleased(java.awt.event.MouseEvent m) {
+                double dx = (MandelbrotHalmazNagyító.this.b
+                        - MandelbrotHalmazNagyító.this.a)
+                        /MandelbrotHalmazNagyító.this.szélesség;
+                double dy = (MandelbrotHalmazNagyító.this.d
+                        - MandelbrotHalmazNagyító.this.c)
+                        /MandelbrotHalmazNagyító.this.magasság;
+
+                new MandelbrotHalmazNagyító(MandelbrotHalmazNagyító.this.a+x*dx,
+                        MandelbrotHalmazNagyító.this.a+x*dx+mx*dx,
+                        MandelbrotHalmazNagyító.this.d-y*dy-my*dy,
+                        MandelbrotHalmazNagyító.this.d-y*dy,
+                        600,
+                        MandelbrotHalmazNagyító.this.iterációsHatár);
+            }
+        });
+
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+
+            public void mouseDragged(java.awt.event.MouseEvent m) {
+
+                mx = m.getX() - x;
+                my = m.getY() - y;
+                repaint();
+            }
+        });
+    }
+
+    public void pillanatfelvétel() {
+
+        java.awt.image.BufferedImage mentKép =
+                new java.awt.image.BufferedImage(szélesség, magasság,
+                java.awt.image.BufferedImage.TYPE_INT_RGB);
+        java.awt.Graphics g = mentKép.getGraphics();
+        g.drawImage(kép, 0, 0, this);
+        g.setColor(java.awt.Color.BLUE);
+        g.drawString("a=" + a, 10, 15);
+        g.drawString("b=" + b, 10, 30);
+        g.drawString("c=" + c, 10, 45);
+        g.drawString("d=" + d, 10, 60);
+        g.drawString("n=" + iterációsHatár, 10, 75);
+        if(számításFut) {
+            g.setColor(java.awt.Color.RED);
+            g.drawLine(0, sor, getWidth(), sor);
+        }         
+        g.setColor(java.awt.Color.GREEN);
+        g.drawRect(x, y, mx, my);
+        g.dispose();        
+
+        StringBuffer sb = new StringBuffer();
+        sb = sb.delete(0, sb.length());
+        sb.append("MandelbrotHalmazNagyitas_");
+        sb.append(++pillanatfelvételSzámláló);
+        sb.append("_");
+
+        sb.append(a);
+        sb.append("_");
+        sb.append(b);
+        sb.append("_");
+        sb.append(c);
+        sb.append("_");
+        sb.append(d);
+        sb.append(".png");
+
+        try {
+            javax.imageio.ImageIO.write(mentKép, "png",
+                    new java.io.File(sb.toString()));
+        } catch(java.io.IOException e) {
+            e.printStackTrace();
+        }
+    }    
+
+    public void paint(java.awt.Graphics g) {
+
+         g.drawImage(kép, 0, 0, this);
+       
+        if(számításFut) {
+            g.setColor(java.awt.Color.RED);
+            g.drawLine(0, sor, getWidth(), sor);
+        }         
+
+        g.setColor(java.awt.Color.GREEN);
+        g.drawRect(x, y, mx, my);
+    }
+
+    public static void main(String[] args) {
+
+        new MandelbrotHalmazNagyító(-2.0, .7, -1.35, 1.35, 600, 255);
+    }
+}
+]]></programlisting>
+        </para>
+    </section>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+</chapter>                

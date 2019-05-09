@@ -1,0 +1,221 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Caesar!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+    <section>
+        <title>
+            <type>int ***</type> háromszögmátrix avagy "legyen egy csillaggal kevesebb és <type>double</type>"</title>
+        <para>
+            Tehát, hogyan íratunk ki egy háromszögmátrixot konzolra <type>double</type>, <type>double</type>-re mutató mutató és
+            <type>double</type>-re mutató mutatóra mutató használatával.
+
+        </para>
+
+        <para>
+            Megoldás videó:
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="harmadik/haromszog/csill.c">
+                <filename>Csill.c</filename>               
+            </link>
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...:
+           
+        </para> 
+        <para>A programunk úgy épül fel, hogy először megadjuk hogy hány sora legyen a mátrixnak, és deklarálunk egy mutatót amely mutató double tipusú lesz. Ez a mutató fog majd nekünk segiteni a mátrix soraiban lévő elemekre hivatkozásban.
+        A malloc függvény használatával lefoglalunk minden egyes sornak egy-egy mutatót a memóriában.A visszaadott void tipusó mutatót double re kényszerítjük, ha valami hiba lenne eközben és NULL pointerünk szóletne, akkor kilépünk a programból.
+        Majd minden sorban foglalunk helyet a memóriában egy alsó háromszög mátrixnak megfelelő double-nek. Ezek már nem mutatók lesznek, hanem konkrét értékek, itt is ha valami hiba lépne fel, akkor kilépünk a programból.
+        A sorokat és a soronkénti oszlopokat 0-tól kezdve egyesével feltötjük lebegőpontos számokkal.
+        Végül, végiglépkedünk az egészen mégegyszer, és a korábban lefoglalt memória területeket felszabadítjuk hogy ne legyen memória leak .</para>       
+    </section>        
+    <section>
+        <title>C EXOR titkosító</title>
+        <para>
+            Írj egy EXOR titkosítót C-ben!
+        </para>
+        <para>
+            Megoldás videó:
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="harmadik/kodi/ex.c">
+                <filename>Exor Kódoló</filename>               
+            </link>               
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+            A program működésének egy része a forrásomban el van magyarázva már, de itt is a lényeget megírom. Az exor kódoló, egy kizáróvagy-os logikai műveleten alapuló kódolás, mely egy megadott kulcs alapján kódol.
+            Használata igen egyszerű, futtatásnál, első argumentumnak megadjuk a használni kívánt kulcsot, majd a titkosítandó szöveges fájlt, és adunk egy kimeneti fájl nevet, majd futtatjuk, és meg is kaptuk a számunkra olvashatatlan kódolt szöveget. 
+        </para>            
+    </section>        
+    <section>
+        <title>Java EXOR titkosító</title>
+        <para>
+            Írj egy EXOR titkosítót Java-ban!
+        </para>
+        <para>
+            Megoldás videó:
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="harmadik/java/ex.java">
+                <filename>Exor Kódoló in Java</filename>               
+            </link>               
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+        </para>   
+        
+        <para>
+            Először létrehozunk egy public classt vagy objectet melyben dolgozni fogunk. Utána megcsináljuk a konstruktort , mellyel majd átadjuk az objektumnak a kapott értékekket.
+            A paraméterként átadott kulcsot tároljuk egy stringbe, majd az input és output csatornát létrehozzuk. Egy byte tömbben tároljuk a megadott kulcs bájtjait és a buffer méretét.
+            Innen hasonlít a C változathoz, csak azzal a különbséggel hogy a mainbe teszünk még egy try catch ágat hogy az esetleges hibákat megfogjuk.
+            
+            <programlisting>
+         <![CDATA[
+public class ExorTitkosító {
+    
+    public ExorTitkosító(String kulcsSzöveg,
+            java.io.InputStream bejövőCsatorna,
+            java.io.OutputStream kimenőCsatorna)
+            throws java.io.IOException {
+        
+        byte [] kulcs = kulcsSzöveg.getBytes();
+        byte [] buffer = new byte[256];
+        int kulcsIndex = 0;
+        int olvasottBájtok = 0;
+        while((olvasottBájtok =
+                bejövőCsatorna.read(buffer)) != -1) {
+            
+            for(int i=0; i<olvasottBájtok; ++i) {
+                
+                buffer[i] = (byte)(buffer[i] ^ kulcs[kulcsIndex]);
+                kulcsIndex = (kulcsIndex+1) % kulcs.length;
+                
+            }
+            
+            kimenőCsatorna.write(buffer, 0, olvasottBájtok);
+            
+        }
+        
+    }
+    
+    public static void main(String[] args) {
+        
+        try {
+            
+            new ExorTitkosító(args[0], System.in, System.out);
+            
+        } catch(java.io.IOException e) {
+            
+            e.printStackTrace();
+            
+        }
+        
+    }
+    
+}
+ ]]>  
+         </programlisting>   
+        </para>         
+    </section>        
+    <section>
+        <title>C EXOR törő*</title>
+        <para>
+            Írj egy olyan C programot, amely megtöri az első feladatban előállított titkos szövegeket!
+        </para>
+        <para>
+            Megoldás videó:
+        </para>
+        <para>
+            Megoldás forrása:   <link xlink:href="harmadik/tor/tor.c">
+                <filename>Exor Kódtörő</filename>   
+            </link>           
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+        </para> 
+        <para>A prögramunk felépítése a következő. Először a program elején kiszámítjuk az átlagos szóhosszt. Összeszámoljuk a forrásunkban szóközöket és elosztjuk vele az összes karakter számát. Ezekután, biztosak lehetünk abban, hogy a szövegünk tartalmaz gyakori magyar szavakat, mint például: "az","ha","nem","hogy".
+        Az előbb kiszámolt átlagos szóhossz segitségével csökkenthetjük a törések számát is emiatt. Majd bájtonként végigmegyünk az EXOR-al. A % használatával, a kulcsot aktuálisként tartjuk akkor is, ha a szó hosszabb mint a kulcs. Ezek után, while ciklussal megyünk amig van bemenet, és egymásba ágyazott for ciklusokkal kipróbáljuk és előállitjuk az összes kulcsot, ha ez megtörtént, újra exorozunk, ennek köszönhetően nem fog kelleni második buffer.</para>           
+    </section>        
+    <section>
+        <title>Neurális OR, AND és EXOR kapu</title>
+        <para>
+            R
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href="https://youtu.be/Koyw6IH5ScQ">https://youtu.be/Koyw6IH5ScQ</link>
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/NN_R">https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/NN_R</link>               
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+            
+            A következő logikai kapuk szimulált ideghálóval fognak kiértékelődni.
+            
+            OR:
+            
+            <programlisting>
+         <![CDATA[
+library(neuralnet)
+a1    <- c(0,1,0,1)
+a2    <- c(0,0,1,1)
+OR    <- c(0,1,1,1)
+or.data <- data.frame(a1, a2, OR)
+nn.or <- neuralnet(OR~a1+a2, or.data, hidden=0, linear.output=FALSE, stepmax = 1e+07, threshold = 0.000001)
+plot(nn.or)
+compute(nn.or, or.data[,1:2])
+ ]]>  
+         </programlisting> 
+         
+         AND:
+         
+         <programlisting>
+         <![CDATA[
+a1    <- c(0,1,0,1)
+a2    <- c(0,0,1,1)
+OR    <- c(0,1,1,1)
+AND   <- c(0,0,0,1)
+orand.data <- data.frame(a1, a2, OR, AND)
+nn.orand <- neuralnet(OR+AND~a1+a2, orand.data, hidden=0, linear.output=FALSE, stepmax = 1e+07, threshold = 0.000001)
+plot(nn.orand)
+compute(nn.orand, orand.data[,1:2])
+ ]]>  
+         </programlisting>  
+         
+         EXOR:
+         
+         <programlisting>
+         <![CDATA[
+a1      <- c(0,1,0,1)
+a2      <- c(0,0,1,1)
+EXOR    <- c(0,1,1,0)
+exor.data <- data.frame(a1, a2, EXOR)
+nn.exor <- neuralnet(EXOR~a1+a2, exor.data, hidden=2, linear.output=FALSE, stepmax = 1e+07, threshold = 0.000001)
+plot(nn.exor)
+compute(nn.exor, exor.data[,1:2])
+ ]]>  
+         </programlisting>  
+        
+        </para>            
+    </section>        
+    <section>
+        <title>Hiba-visszaterjesztéses perceptron*</title>
+        <para>
+            C++
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="https://github.com/nbatfai/nahshon/blob/master/ql.hpp#L64">https://github.com/nbatfai/nahshon/blob/master/ql.hpp#L64</link>               
+        </para>
+
+        <para>
+           Először definiáljuk a kezdeti súlyokat, majd az input végigmegy a hálózaton de a súlyok változatlanok maradnak.Majd az elkészült kimenetet összevetjük a tényleges kimeneti jellel. Majd a hibát visszaküldjük a neuronokon keresztül és most változtatunk a súlyokon, úgy, hogy a hibákat amennyire csak tudjuk lecsökkentsük. Azt, hogy milyen módon változtassuk a súlyokat, abban segít a hiba-visszaterjesztéses algoritmus a kimeneti rétegekből a rejtettekbe.
+            Elsőnek a kimeneti rétegben meghatározzuk a hibák számát, és az így kapott értékeket visszaterjesztjük a kimeneti réteg előttre, a rejtett rétegekre. A kapott hibákat egymás után, korábbi rétegekre terjesztjük vissza, igy a hiba skálázódik, a jelenlegi meg az őt megelőző súlyok értékeinek függvényében. EZ addig folytatódik, mig meg nem kapjuk a bemeneti réteget.
+        </para>            
+    </section>        
+        
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+</chapter>                
